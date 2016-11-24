@@ -24,11 +24,15 @@
 
 private let benchmarker = Benchmarker()
 
-public enum Level {
-    case trace, debug, info, warning, error
+public enum Level: String {
+    case Trace = "🗣 Trace",
+    Debug = "👻 Debug",
+    Info = "🤖 Info",
+    Warning = "🤕 Warning",
+    Error = "👹 Error"
     
     var description: String {
-        return String(describing: self).uppercased()
+        return String(self.rawValue).uppercaseString
     }
 }
 
