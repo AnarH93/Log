@@ -24,11 +24,15 @@
 
 private let benchmarker = Benchmarker()
 
-public enum Level {
-    case Trace, Debug, Info, Warning, Error
+public enum Level: String {
+    case Trace = "🗣 Trace",
+    Debug = "👻 Debug",
+    Info = "🤖 Info",
+    Warning = "🤕 Warning",
+    Error = "👹 Error"
     
     var description: String {
-        return String(self).uppercaseString
+        return String(self.rawValue).uppercaseString
     }
 }
 
@@ -50,6 +54,8 @@ public class Logger {
     public var formatter: Formatter {
         didSet { formatter.logger = self }
     }
+    /// The callback for didLog event
+    public var didLog: ((String) -> Void)?
     
     /// The logger theme.
     public var theme: Theme?
@@ -175,7 +181,6 @@ public class Logger {
      - parameter function:   The function in which the log happens.
      */
     private func log(level: Level, _ items: [Any], _ separator: String, _ terminator: String, _ file: String, _ line: Int, _ column: Int, _ function: String) {
-        guard enabled && level >= minLevel else { return }
         
         let date = NSDate()
         
@@ -191,6 +196,9 @@ public class Logger {
             date: date
         )
         
+        self.didLog?(result)
+        //i know - guard must be a first line, but i need catch all log events with format
+        guard enabled && level >= minLevel else { return }
         dispatch_async(queue) {
             Swift.print(result, separator: "", terminator: "")
         }
