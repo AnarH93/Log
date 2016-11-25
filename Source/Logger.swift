@@ -25,14 +25,14 @@
 private let benchmarker = Benchmarker()
 
 public enum Level: String {
-    case Trace = "🗣 Trace",
-    Debug = "👻 Debug",
-    Info = "🤖 Info",
-    Warning = "🤕 Warning",
-    Error = "👹 Error"
+    case trace = "🗣 Trace",
+    debug = "👻 Debug",
+    info = "🤖 Info",
+    warning = "🤕 Warning",
+    error = "👹 Error"
     
     var description: String {
-        return String(self.rawValue).uppercaseString
+        return String(describing: self.rawValue).uppercased()
     }
 }
 
@@ -73,6 +73,8 @@ open class Logger {
     
     /// The queue used for logging.
     private let queue = DispatchQueue(label: "delba.log")
+    
+    public var didLog: ((String) -> Void)?
     
     /**
      Creates and returns a new logger.
@@ -197,6 +199,7 @@ open class Logger {
         
         queue.async {
             Swift.print(result, separator: "", terminator: "")
+            self.didLog?(result)
         }
     }
     
