@@ -198,8 +198,11 @@ open class Logger {
         )
         
         queue.async {
-            Swift.print(result, separator: "", terminator: "")
-            self.didLog?(result)
+            guard let didLog = self.didLog else {
+                Swift.print(result, separator: "", terminator: "")
+                return
+            }
+            didLog(result)
         }
     }
     
