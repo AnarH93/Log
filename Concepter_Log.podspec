@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "Concepter_Log"
-  s.version      = "1.0"
+  s.version      = "1.2"
   s.summary      = "An extensible logging framework for Swift"
 
   # This description is used to generate tags and improve search results.
